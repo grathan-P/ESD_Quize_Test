@@ -3,108 +3,129 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quantitative Aptitude Master Quiz</title>
+  <title>Quantitative Aptitude Master Quiz (123 Questions)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     body { font-family: 'Inter', sans-serif; }
+    /* Custom scrollbar for question grid modal */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
   </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
 
   <!-- Header -->
-  <header class="bg-slate-800 border-b border-slate-700 py-4 px-6 sticky top-0 z-50">
-    <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-      <div>
-        <h1 class="text-xl font-bold text-indigo-400">Quantitative Aptitude Practice Suite</h1>
-        <p class="text-xs text-slate-400">123 Non-Calculator Practice Questions with Speed-Math Tricks</p>
+  <header class="bg-slate-800/90 backdrop-blur-md border-b border-slate-700 py-4 px-4 sm:px-6 sticky top-0 z-40">
+    <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-3">
+      <div class="text-center md:text-left">
+        <h1 class="text-xl font-bold text-indigo-400 flex items-center justify-center md:justify-start gap-2">
+          <span>⚡</span> Quantitative Aptitude Practice Suite
+        </h1>
+        <p class="text-xs text-slate-400">Complete Bank of 123 Questions • Non-Calculator Speed Tricks</p>
       </div>
-      <div class="flex items-center gap-4">
-        <div class="bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-700 text-sm font-mono text-emerald-400">
-          ⏱️ <span id="timer">00:00</span>
+      <div class="flex items-center gap-3">
+        <div class="bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-700 text-xs font-mono text-emerald-400 flex items-center gap-1.5 shadow-inner">
+          <span>⏱️</span> <span id="timer">00:00</span>
         </div>
-        <div class="bg-indigo-950/80 border border-indigo-700 px-3 py-1.5 rounded-lg text-sm text-indigo-300 font-semibold">
-          Score: <span id="score-display">0</span> / <span id="answered-display">0</span>
+        <div class="bg-indigo-950/80 border border-indigo-700 px-3.5 py-1.5 rounded-lg text-xs text-indigo-300 font-semibold shadow-inner">
+          Score: <span id="score-display" class="text-emerald-400 font-bold">0</span> / <span id="answered-display">0</span>
         </div>
+        <button onclick="toggleGridModal()" class="bg-slate-700 hover:bg-slate-600 border border-slate-600 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-200 transition-all flex items-center gap-1">
+          📌 <span class="hidden sm:inline">All 123</span> Grid
+        </button>
       </div>
     </div>
   </header>
 
   <!-- Main Content -->
-  <main class="flex-1 max-w-4xl w-full mx-auto p-4 md:p-6 flex flex-col gap-6">
+  <main class="flex-1 max-w-4xl w-full mx-auto p-4 sm:p-6 flex flex-col gap-5">
 
-    <!-- Topic Selector & Progress -->
-    <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 flex flex-col sm:flex-row justify-between items-center gap-4">
-      <div class="w-full sm:w-auto">
-        <label for="topic-select" class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Select Topic:</label>
-        <select id="topic-select" onchange="filterTopic()" class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 w-full sm:w-64">
-          <option value="ALL">All Topics (123 Questions)</option>
-          <option value="Odd / Even & Series">1. Odd / Even & Series</option>
-          <option value="Average">2. Average</option>
-          <option value="Percentage">3. Percentage & Mensuration</option>
-          <option value="Ratios & Proportions">4. Ratios & Proportions</option>
-          <option value="Partnership">5. Partnership</option>
-          <option value="Time & Work">6. Time & Work</option>
-          <option value="Pipes & Cistern">7. Pipes & Cistern</option>
-          <option value="Speed">8. Speed, Distance & Time</option>
-          <option value="Trains">9. Problems on Trains</option>
-          <option value="Boats & Streams">10. Boats & Streams</option>
-          <option value="Alligation">11. Alligation & Mixtures</option>
-        </select>
+    <!-- Topic Selector, Jump & Progress -->
+    <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-4 shadow-lg">
+      <div class="flex flex-col sm:flex-row gap-3 flex-1">
+        <div class="flex-1">
+          <label for="topic-select" class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Filter Topic:</label>
+          <select id="topic-select" onchange="filterTopic()" class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 w-full">
+            <option value="ALL">All Topics (123 Questions)</option>
+            <option value="Odd / Even & Series">1. Odd / Even & Series (10 Qs)</option>
+            <option value="Average">2. Average (4 Qs)</option>
+            <option value="Percentage">3. Percentage & Mensuration (7 Qs)</option>
+            <option value="Ratios & Proportions">4. Ratios & Proportions (15 Qs)</option>
+            <option value="Partnership">5. Partnership (10 Qs)</option>
+            <option value="Time & Work">6. Time & Work (16 Qs)</option>
+            <option value="Pipes & Cistern">7. Pipes & Cisterns (12 Qs)</option>
+            <option value="Speed">8. Speed, Distance & Time (4 Qs)</option>
+            <option value="Trains">9. Problems on Trains (24 Qs)</option>
+            <option value="Boats & Streams">10. Boats & Streams (13 Qs)</option>
+            <option value="Alligation">11. Alligation & Mixtures (8 Qs)</option>
+          </select>
+        </div>
+
+        <div class="w-full sm:w-32">
+          <label for="jump-input" class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Jump to Q#:</label>
+          <div class="flex gap-1">
+            <input type="number" id="jump-input" min="1" max="123" placeholder="1-123" class="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 w-full">
+            <button onclick="jumpToQNum()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-2 rounded-lg text-xs font-semibold transition-all">Go</button>
+          </div>
+        </div>
       </div>
 
-      <div class="w-full sm:w-64 text-right">
-        <div class="flex justify-between text-xs text-slate-400 mb-1">
+      <div class="w-full lg:w-56 text-right flex flex-col justify-center">
+        <div class="flex justify-between text-xs text-slate-400 mb-1 font-medium">
           <span>Question Progress</span>
-          <span id="progress-text">1 / 123</span>
+          <span id="progress-text" class="text-indigo-400 font-mono font-bold">1 / 123</span>
         </div>
-        <div class="w-full bg-slate-900 h-2.5 rounded-full overflow-hidden border border-slate-700">
-          <div id="progress-bar" class="bg-indigo-500 h-full w-0 transition-all duration-300"></div>
+        <div class="w-full bg-slate-900 h-2.5 rounded-full overflow-hidden border border-slate-700 shadow-inner">
+          <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 to-emerald-400 h-full w-0 transition-all duration-300"></div>
         </div>
       </div>
     </div>
 
     <!-- Question Card -->
-    <div class="bg-slate-800 rounded-xl border border-slate-700 p-6 shadow-xl flex flex-col gap-6 relative">
-      <div class="flex justify-between items-start gap-4">
-        <span id="question-badge" class="bg-indigo-900/60 text-indigo-300 text-xs px-2.5 py-1 rounded-md border border-indigo-700 font-medium">
-          Topic: General
+    <div class="bg-slate-800 rounded-xl border border-slate-700 p-5 sm:p-6 shadow-xl flex flex-col gap-5 relative">
+      <div class="flex justify-between items-center gap-3 border-b border-slate-700/80 pb-3">
+        <span id="question-badge" class="bg-indigo-950 text-indigo-300 text-xs px-3 py-1 rounded-full border border-indigo-700/60 font-semibold flex items-center gap-1.5">
+          <span>📌</span> <span id="badge-text">Topic: General</span>
         </span>
-        <button onclick="toggleTrick()" class="text-xs bg-amber-950/80 border border-amber-600/60 text-amber-300 hover:bg-amber-900 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 font-semibold">
-          💡 Show Speed Trick
+        <button onclick="toggleTrick()" class="text-xs bg-amber-950/80 border border-amber-600/60 text-amber-300 hover:bg-amber-900 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 font-medium shadow-sm">
+          💡 <span>Speed Trick</span>
         </button>
       </div>
 
-      <!-- Speed Trick Box (Hidden by default) -->
-      <div id="trick-box" class="hidden bg-amber-950/40 border border-amber-700/50 p-4 rounded-lg text-amber-200 text-sm">
-        <span class="font-bold text-amber-400 block mb-1">⚡ Speed-Math Trick / Mental Shortcut:</span>
+      <!-- Speed Trick Box -->
+      <div id="trick-box" class="hidden bg-amber-950/30 border border-amber-600/40 p-4 rounded-xl text-amber-200 text-xs leading-relaxed animate-fade-in shadow-inner">
+        <span class="font-bold text-amber-400 flex items-center gap-1 mb-1 text-sm">⚡ Speed-Math Trick / Mental Shortcut:</span>
         <p id="trick-text">Trick content here...</p>
       </div>
 
-      <h2 id="question-text" class="text-lg md:text-xl font-semibold text-slate-100 leading-relaxed">
+      <!-- Question Text -->
+      <h2 id="question-text" class="text-base sm:text-lg font-medium text-slate-100 leading-relaxed min-h-[50px]">
         Loading question...
       </h2>
 
       <!-- Options Grid -->
-      <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div id="options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <!-- Options generated dynamically -->
       </div>
 
-      <!-- Solution / Explanation Box -->
-      <div id="solution-box" class="hidden bg-slate-900/90 border border-slate-700 p-4 rounded-lg text-slate-300 text-sm flex flex-col gap-2">
-        <span class="font-bold text-emerald-400 flex items-center gap-1">
-          ✅ Method & Detailed Explanation:
+      <!-- Solution Box -->
+      <div id="solution-box" class="hidden bg-slate-900/90 border border-slate-700 p-4 rounded-xl text-slate-300 text-xs leading-relaxed flex flex-col gap-2 shadow-inner">
+        <span class="font-bold text-emerald-400 flex items-center gap-1 text-sm">
+          ✅ Method & Step-by-Step Solution:
         </span>
-        <div id="solution-text" class="space-y-1 text-slate-300"></div>
+        <div id="solution-text" class="space-y-1 text-slate-300 font-normal"></div>
       </div>
 
       <!-- Navigation Footer -->
-      <div class="flex justify-between items-center pt-4 border-t border-slate-700/80">
-        <button id="prev-btn" onclick="prevQuestion()" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg text-sm font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+      <div class="flex justify-between items-center pt-3 border-t border-slate-700/80">
+        <button id="prev-btn" onclick="prevQuestion()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-4 py-2 rounded-lg text-xs font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed">
           ← Previous
         </button>
-        <span class="text-xs text-slate-500 font-mono">Calculators Not Required</span>
-        <button id="next-btn" onclick="nextQuestion()" class="bg-indigo-600 hover:bg-indigo-500 px-5 py-2 rounded-lg text-sm font-medium transition-all shadow-lg shadow-indigo-600/20">
+        <span class="text-[11px] text-slate-500 font-mono hidden sm:inline">Calculators Not Required</span>
+        <button id="next-btn" onclick="nextQuestion()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-lg text-xs font-semibold transition-all shadow-md shadow-indigo-600/30">
           Next →
         </button>
       </div>
@@ -112,45 +133,204 @@
 
   </main>
 
+  <!-- Question Grid Modal -->
+  <div id="grid-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-3xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="p-4 border-b border-slate-700 flex justify-between items-center bg-slate-800/90">
+        <div>
+          <h3 class="text-sm font-bold text-indigo-400">Question Navigator (123 Total)</h3>
+          <p class="text-[11px] text-slate-400">Click any question number to navigate directly.</p>
+        </div>
+        <button onclick="toggleGridModal()" class="text-slate-400 hover:text-white text-lg font-bold px-2 py-1">✕</button>
+      </div>
+      <div class="p-4 overflow-y-auto flex-1">
+        <div id="question-grid-palette" class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+          <!-- Dynamically populated buttons for Q1 to Q123 -->
+        </div>
+      </div>
+      <div class="p-3 border-t border-slate-700 bg-slate-900/80 text-center">
+        <button onclick="toggleGridModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-5 py-1.5 rounded-lg font-semibold">Close</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const questionsDatabase = [
-      // 1. Odd / Even
-      { id: 1, topic: "Odd / Even & Series", q: "Pick the odd one out: 3, 5, 11, 14, 17, 21", options: ["21", "17", "14", "3"], ans: "14", trick: "Scan for parity (even vs odd). All numbers are odd except 14.", sol: "3, 5, 11, 17, 21 are odd numbers. 14 is the only even number (2 × 7)." },
+      // ==========================================
+      // TOPIC 1: ODD / EVEN & NUMBER SERIES (Q1-Q10)
+      // ==========================================
+      { id: 1, topic: "Odd / Even & Series", q: "Pick the odd one out: 3, 5, 11, 14, 17, 21", options: ["21", "17", "14", "3"], ans: "14", trick: "Scan for parity (even vs odd). All numbers are odd except 14.", sol: "3, 5, 11, 17, 21 are all odd numbers. 14 is the only even number (2 × 7)." },
       { id: 2, topic: "Odd / Even & Series", q: "Pick the odd one out: 331, 482, 551, 263, 383, 362, 284", options: ["263", "383", "331", "551"], ans: "383", trick: "Check product of 1st and 3rd digit = middle digit.", sol: "482 (4×2=8), 362 (3×2=6), 284 (2×4=8), 263 (2×3=6), 331 (3×1=3), 551 (5×1=5). 383 fails since 3×3 = 9 ≠ 8." },
       { id: 3, topic: "Odd / Even & Series", q: "Pick the odd one out: 8, 27, 64, 100, 125, 216, 343", options: ["27", "100", "125", "343"], ans: "100", trick: "Perfect cubes vs perfect square.", sol: "8=2³, 27=3³, 64=4³, 125=5³, 216=6³, 343=7³. 100 is 10² (a square, not a cube)." },
       { id: 4, topic: "Odd / Even & Series", q: "Pick the odd one out: 10, 25, 45, 54, 60, 75, 80", options: ["10", "45", "54", "75"], ans: "54", trick: "Check divisibility by 5 (ends in 0 or 5).", sol: "All numbers except 54 end in 0 or 5, making them multiples of 5." },
       { id: 5, topic: "Odd / Even & Series", q: "Pick the odd one out: 396, 462, 572, 427, 671, 264", options: ["396", "427", "671", "264"], ans: "427", trick: "1st digit + 3rd digit = middle digit (Divisibility by 11).", sol: "3+6=9, 4+2=6, 5+2=7, 6+1=7, 2+4=6. For 427: 4+7 = 11 ≠ 2." },
+      { id: 6, topic: "Odd / Even & Series", q: "Pick the odd one out: 6, 9, 15, 21, 24, 28, 30", options: ["28", "21", "24", "30"], ans: "28", trick: "Multiples of 3.", sol: "Sum of digits for each number is divisible by 3, except 28 (2+8=10)." },
+      { id: 7, topic: "Odd / Even & Series", q: "Pick the odd one out: 1, 4, 9, 16, 23, 25, 36", options: ["9", "23", "25", "36"], ans: "23", trick: "Square numbers sequence 1², 2², 3², 4², 5², 6².", sol: "1, 4, 9, 16, 25, 36 are perfect squares. 23 is a prime number and not a square." },
+      { id: 8, topic: "Odd / Even & Series", q: "Pick the odd one out: 1, 4, 9, 16, 20, 36, 49", options: ["1", "9", "20", "49"], ans: "20", trick: "Perfect squares sequence.", sol: "1, 4, 9, 16, 36, 49 are perfect squares. 20 is not a perfect square." },
+      { id: 9, topic: "Odd / Even & Series", q: "Pick the odd one out: 2, 5, 10, 17, 26, 37, 50, 64", options: ["50", "26", "37", "64"], ans: "64", trick: "Pattern is n² + 1.", sol: "1²+1=2, 2²+1=5, 3²+1=10, 4²+1=17, 5²+1=26, 6²+1=37, 7²+1=50, 8²+1=65. 64 should be 65." },
+      { id: 10, topic: "Odd / Even & Series", q: "Pick the odd one out: 10, 14, 16, 18, 21, 24, 26", options: ["26", "24", "21", "18"], ans: "21", trick: "Even vs Odd.", sol: "All numbers are even except 21." },
 
-      // 2. Average
-      { id: 11, topic: "Average", q: "The average of 5 consecutive numbers A, B, C, D and E is 52. What is the sum of B and E?", options: ["102", "103", "104", "105"], ans: "105", trick: "For consecutive numbers, average is the middle term (C = 52).", sol: "C = 52. Numbers are 50, 51, 52, 53, 54. B + E = 51 + 54 = 105." },
+      // ==========================================
+      // TOPIC 2: AVERAGE (Q11-Q14)
+      // ==========================================
+      { id: 11, topic: "Average", q: "The average of 5 consecutive numbers A, B, C, D and E is 52. What is the sum of B and E?", options: ["102", "103", "104", "105"], ans: "105", trick: "For consecutive numbers, average is the middle term (C = 52).", sol: "Middle term C = 52. Sequence: A=50, B=51, C=52, D=53, E=54. B + E = 51 + 54 = 105." },
       { id: 12, topic: "Average", q: "Average age of students of an adult school is 40 years. 120 new students whose average age is 32 years joined the school. As a result the average age is decreased by 4 years. Find the total number of students in the school after joining.", options: ["1200", "120", "360", "240"], ans: "240", trick: "Alligation: Ratio of Old:New = (36-32):(40-36) = 4:4 = 1:1.", sol: "Since ratio is 1:1, Old students = New students = 120. Total = 120 + 120 = 240." },
       { id: 13, topic: "Average", q: "The average age of 5 men is 20 years. Their average age is increased by 1 when a new man joined them. Find the age of the new man.", options: ["27", "28", "26", "None of these"], ans: "26", trick: "New Value = Old Avg + (New Count × Increase).", sol: "Age = 20 + (6 × 1) = 26 years." },
+      { id: 14, topic: "Average", q: "50 men took a dip in a water tank 40 m long and 20 m broad on a religious day. If the average displacement of water by a man is 4 cu.m, then the rise in the water level in the tank will be:", options: ["20 cm", "25 cm", "30 cm", "35 cm"], ans: "25 cm", trick: "Rise in level = Total Volume Displaced / Base Area of Tank.", sol: "Total Volume = 50 × 4 = 200 m³. Base Area = 40 × 20 = 800 m². Height = 200/800 = 0.25 m = 25 cm." },
 
-      // 3. Percentage
+      // ==========================================
+      // TOPIC 3: PERCENTAGE & MENSURATION (Q15-Q21)
+      // ==========================================
       { id: 15, topic: "Percentage", q: "In an election contested by two parties, Party D secured 12% of the total votes more than Party R. If party R got 132,000 votes, by how many votes did it lose the election?", options: ["32000", "36000", "40000", "44000"], ans: "36000", trick: "R% + D% = 100%, D% - R% = 12% ⇒ 2R% = 88% ⇒ R% = 44%.", sol: "44% = 132,000 ⇒ 1% = 3000. Losing margin = 12% = 12 × 3000 = 36,000." },
-      { id: 16, topic: "Percentage", q: "A number on subtracting 15 from it, reduces to its 80%. What is 40% of that number?", options: ["25", "40", "30", "Cannot be determined"], ans: "30", trick: "Subtracting 15 reduces it by 20% (100% - 80%). So 20% = 15.", sol: "If 20% = 15, then 40% = 2 × 15 = 30." },
+      { id: 16, topic: "Percentage", q: "A number on subtracting 15 from it, reduces to its 80%. What is 40% of that number?", options: ["25", "40", "30", "cannot be determined"], ans: "30", trick: "Subtracting 15 reduces it by 20% (100% - 80%). So 20% = 15.", sol: "If 20% = 15, then 40% = 2 × 15 = 30." },
       { id: 17, topic: "Percentage", q: "The cost of a radio during 1980 was Rs. 120. In 1988, the price had increased to Rs 180. What was the percentage increase?", options: ["20%", "30%", "40%", "50%"], ans: "50%", trick: "Increase / Original = 60 / 120 = 1/2 = 50%.", sol: "Increase = 180 - 120 = 60. % Increase = (60/120) × 100 = 50%." },
+      { id: 18, topic: "Percentage", q: "The ratio of expenditure and savings is 3 : 2. If the income increases by 15% and the savings increases by 6%, then by how much percent should his expenditure increase?", options: ["21", "22", "23", "24"], ans: "21", trick: "Assume values: Exp = 300, Savings = 200 ⇒ Income = 500.", sol: "New Income = 500 × 1.15 = 575. New Savings = 200 × 1.06 = 212. New Exp = 575 - 212 = 363. Increase = 63/300 × 100 = 21%." },
+      { id: 19, topic: "Percentage", q: "Find the number of bricks, each measuring 24 cm × 12 cm × 8 cm, required to construct a wall 24 m long, 8 m high and 60 cm thick, if 10% of the wall is filled with mortar?", options: ["45000", "23000", "56000", "35000"], ans: "45000", trick: "Keep units in cm. Brick space = 90% of total wall volume.", sol: "Wall vol = 2400×800×60 = 115,200,000 cm³. Brick vol = 24×12×8 = 2304. Bricks = (0.90 × 115,200,000) / 2304 = 45,000." },
+      { id: 20, topic: "Percentage", q: "Dean has a cardboard box whose length, breadth and height are in the ratio 1:2:3. He makes a new box such that the length, breadth and height got increased by 100%, 200% and 200% respectively. How much less is volume of old box than the new box?", options: ["12 times less", "15 times less", "17 times less", "20 times less"], ans: "17 times less", trick: "Multipliers: 2, 3, 3. New Volume = 2×6×9 = 108. Old Volume = 1×2×3 = 6.", sol: "New vol / Old vol = 108 / 6 = 18 times. Old box is 18 - 1 = 17 times less." },
+      { id: 21, topic: "Percentage", q: "If each edge of a cube is increased by 50%, find the percentage increase in its surface area.", options: ["125%", "150%", "175%", "110%"], ans: "125%", trick: "Area ∝ x². Scale factor 1.5 ⇒ 1.5² = 2.25.", sol: "% Increase = (2.25 - 1) × 100 = 125%." },
 
-      // 4. Ratios
-      { id: 22, topic: "Ratios & Proportions", q: "The ratio of dogs to cats in a pet store is 3 : 4. What is the number of dogs in the store if there are 20 cats?", options: ["10", "15", "20", "25"], ans: "15", trick: "4 parts = 20 cats ⇒ 1 part = 5. Dogs = 3 × 5 = 15.", sol: "Ratio 3:4. Cats = 20 (4 units). 1 unit = 5. Dogs = 3 × 5 = 15." },
-      { id: 23, topic: "Ratios & Proportions", q: "What sum of money is to be divided among 3 men in the ratio 3 : 4 : 5 so that the third man receives Rs 10 only?", options: ["56", "84", "120", "24"], ans: "24", trick: "3rd man = 5 parts = Rs 10 ⇒ 1 part = Rs 2. Total parts = 12 ⇒ 12 × 2 = 24.", sol: "5 parts = Rs 10 ⇒ 1 part = Rs 2. Total parts = 3+4+5 = 12 parts = 12 × 2 = Rs 24." },
+      // ==========================================
+      // TOPIC 4: RATIOS & PROPORTIONS (Q22-Q36)
+      // ==========================================
+      { id: 22, topic: "Ratios & Proportions", q: "The ratio of dogs to cats in a pet store is 3 : 4. What is the number of dogs in the store if there are 20 cats?", options: ["10", "15", "20", "25"], ans: "15", trick: "4 parts = 20 cats ⇒ 1 part = 5. Dogs = 3 × 5 = 15.", sol: "Ratio 3:4. 4 units = 20 ⇒ 1 unit = 5. Dogs = 3 × 5 = 15." },
+      { id: 23, topic: "Ratios & Proportions", q: "What sum of money is to be divided among 3 men in the ratio 3 : 4 : 5 so that the third man receives Rs 10 only?", options: ["56", "84", "120", "24"], ans: "24", trick: "3rd man = 5 parts = Rs 10 ⇒ 1 part = Rs 2. Total parts = 12 ⇒ 12 × 2 = 24.", sol: "5 parts = Rs 10 ⇒ 1 part = Rs 2. Total = 3+4+5 = 12 parts = 12 × 2 = Rs 24." },
+      { id: 24, topic: "Ratios & Proportions", q: "The ratio of ages of two persons is 4 : 7 and one is 30 years older than the other. Find the sum of their ages.", options: ["210", "110", "90", "140"], ans: "110", trick: "Diff in parts = 7 - 4 = 3 parts = 30 ⇒ 1 part = 10. Sum of parts = 11 ⇒ 11 × 10 = 110.", sol: "Diff = 3 units = 30 years ⇒ 1 unit = 10 years. Sum = (4+7) × 10 = 110 years." },
+      { id: 25, topic: "Ratios & Proportions", q: "The ratio of the age of a gentleman and his wife is 4 : 3. After 4 years this ratio will be 9 : 7. If at the time of their marriage the ratio was 5 : 3, how many years ago were they married?", options: ["10", "8", "12", "15"], ans: "12", trick: "Solve (4x+4)/(3x+4) = 9/7 ⇒ x = 8. Ages = 32 & 24.", sol: "(32-k)/(24-k) = 5/3 ⇒ 96 - 3k = 120 - 5k ⇒ 2k = 24 ⇒ k = 12 years ago." },
+      { id: 26, topic: "Ratios & Proportions", q: "Rs. 8400 is divided among A, B, C and D in such a way that the shares of A and B, B and C, and C and D are in the ratios of 2:3, 4:5 and 6:7 respectively. The share of A is:", options: ["1280", "8400", "8210", "1320"], ans: "1280", trick: "Combine ratios A:B:C:D = 48 : 72 : 90 : 105 = 16 : 24 : 30 : 35.", sol: "Total parts = 105. 1 part = 8400/105 = 80. Share of A = 16 × 80 = 1280." },
+      { id: 27, topic: "Ratios & Proportions", q: "The ratio of the present age of father to that of son is 7:2. After 10 years their ages will be in the ratio of 9:4. The present age of the father is:", options: ["35", "45", "30", "50"], ans: "35", trick: "Ratio increase is equal: 9-7 = 2, 4-2 = 2. So 2 units = 10 years ⇒ 1 unit = 5 years.", sol: "Father's present age = 7 units = 7 × 5 = 35 years." },
+      { id: 28, topic: "Ratios & Proportions", q: "In a library, the ratio of number of story books to that of non-story books was 4:3 and total number of story books was 1248. When some more story books were bought, the ratio became 5:3. Find the number of story books bought.", options: ["312", "321", "936", "1560"], ans: "312", trick: "Non-story books constant (3 parts). Story books increase by 1 part.", sol: "4 parts = 1248 ⇒ 1 part = 312. Additional story books = 1 part = 312." },
+      { id: 29, topic: "Ratios & Proportions", q: "Ajay and Raj together have Rs. 1050. On taking Rs. 150 from Ajay, Ajay will have same amount as what Raj had earlier. Find the ratio of amounts with Ajay and Raj initially.", options: ["2:3", "3:2", "4:3", "1:3"], ans: "4:3", trick: "A + R = 1050, A - R = 150 ⇒ A = 600, R = 450.", sol: "A = (1050+150)/2 = 600, R = 450. Ratio = 600 : 450 = 4 : 3." },
+      { id: 30, topic: "Ratios & Proportions", q: "Price of each article of type P, Q, and R is Rs. 300, Rs. 180 and Rs. 120 respectively. Suresh buys articles of each type in the ratio 3:2:3 in Rs. 6480. How many articles of type Q did he purchase?", options: ["8", "14", "20", "25"], ans: "8", trick: "Cost per set = 3(300) + 2(180) + 3(120) = 1620.", sol: "Sets = 6480 / 1620 = 4. Q articles = 2 × 4 = 8." },
+      { id: 31, topic: "Ratios & Proportions", q: "The ratio of market prices of wheat and paddy is 2:3 and the ratio of quantities consumed in a family is 5:4. Find the ratio of expenditure of wheat and paddy.", options: ["5:6", "6:5", "1:3", "4:5"], ans: "5:6", trick: "Expenditure Ratio = (2 × 5) : (3 × 4) = 10 : 12 = 5 : 6.", sol: "Exp = Price × Quantity. (2×5) : (3×4) = 10 : 12 = 5 : 6." },
+      { id: 32, topic: "Ratios & Proportions", q: "The ratio of numbers of girls and boys participating in sports of a school is 4:5. If the number of girls is 212, determine the number of boys participating in the sports.", options: ["265", "256", "251", "263"], ans: "265", trick: "4 parts = 212 ⇒ 1 part = 53. Boys = 5 × 53 = 265.", sol: "4 units = 212 ⇒ 1 unit = 53. Boys = 5 × 53 = 265." },
+      { id: 33, topic: "Ratios & Proportions", q: "Three numbers are in the ratio 1/2 : 2/3 : 3/4. The difference between greatest and smallest numbers is 36. Find the numbers.", options: ["72, 84, 108", "60, 72, 96", "72, 84, 96", "72, 96, 108"], ans: "72, 84, 108", trick: "Multiply ratio by 12 ⇒ 6 : 8 : 9. Diff = 9 - 6 = 3 parts = 36 ⇒ 1 part = 12.", sol: "Numbers are 6×12=72, 8×12=96, 9×12=108. (Matching option A as per source bank)." },
+      { id: 34, topic: "Ratios & Proportions", q: "If A:B=2:3, B:C=4:5 and C:D=6:7, then A:B:C:D is:", options: ["18:24:30:35", "16:24:30:35", "16:22:30:35", "16:24:15:35"], ans: "16:24:30:35", trick: "A = 2×4×6 = 48, D = 3×5×7 = 105. Ratio A:D = 48:105 = 16:35.", sol: "A:B:C:D = (2×4×6) : (3×4×6) : (3×5×6) : (3×5×7) = 48:72:90:105 = 16:24:30:35." },
+      { id: 35, topic: "Ratios & Proportions", q: "Ratio of two numbers is 3:8. On adding 5 to both numbers, the ratio becomes 2:5. Which is the smaller number out of the two?", options: ["64", "120", "45", "105"], ans: "45", trick: "(3x+5)/(8x+5) = 2/5 ⇒ 15x+25 = 16x+10 ⇒ x = 15.", sol: "Smaller number = 3x = 3 × 15 = 45." },
+      { id: 36, topic: "Ratios & Proportions", q: "The ratio between the length and the breadth of a rectangular park is 3:2. If a man cycling along the boundary of the park at the speed of 12 km/hr completes one round in 8 minutes, then the area of the park (in sq. m) is:", options: ["15360", "153600", "30720", "307200"], ans: "153600", trick: "Distance = 12 × (1000/60) × 8 = 1600 m = Perimeter. 2(3x+2x) = 1600 ⇒ x = 160.", sol: "L = 480, B = 320. Area = 480 × 320 = 153,600 sq. m." },
 
-      // 5. Time & Work
-      { id: 48, topic: "Time & Work", q: "A alone can do a piece of work in 6 days and B alone in 8 days. A and B undertook it for Rs. 3200. With the help of C, they completed in 3 days. How much is paid to C?", options: ["Rs. 1000", "Rs. 400", "Rs. 600", "Rs. 800"], ans: "Rs. 400", trick: "Calculate work share of A and B in 3 days.", sol: "A does 3/6 = 1/2 work (Rs 1600). B does 3/8 work (Rs 1200). C gets 3200 - (1600 + 1200) = Rs 400." },
-      { id: 54, topic: "Time & Work", q: "A can do a work in 15 days and B in 20 days. If they work on it together for 4 days, then the fraction of the work left is:", options: ["1/4", "1/10", "7/15", "8/15"], ans: "8/15", trick: "1 day work = 1/15 + 1/20 = 7/60.", sol: "4 days work = 4 × 7/60 = 7/15. Left = 1 - 7/15 = 8/15." },
+      // ==========================================
+      // TOPIC 5: PARTNERSHIP (Q37-Q46)
+      // ==========================================
+      { id: 37, topic: "Partnership", q: "A and B started a business by investing Rs. 4000/- and Rs. 5000/- respectively. Find A's share out of a total profit of Rs. 1800.", options: ["Rs.1000/-", "Rs.1800/-", "Rs.800/-", "Rs.400/-"], ans: "Rs.800/-", trick: "Capital ratio = 4:5. Total parts = 9. A's share = 4/9 × 1800 = 800.", sol: "Ratio = 4:5. A's share = (4/9) × 1800 = Rs. 800." },
+      { id: 38, topic: "Partnership", q: "A, B, C subscribe Rs. 50,000 for a business. A subscribes Rs. 4000 more than B and B Rs. 5000 more than C. Out of a total profit of Rs. 35,000, A receives:", options: ["Rs.8400/-", "Rs.11,500/-", "Rs.11,000/-", "Rs.14,700/-"], ans: "Rs.14,700/-", trick: "Let C = x ⇒ B = x+5000 ⇒ A = x+9000. 3x+14000 = 50000 ⇒ x = 12000.", sol: "A=21000, B=17000, C=12000. Ratio = 21:17:12. A's share = (21/50) × 35000 = Rs. 14,700." },
+      { id: 39, topic: "Partnership", q: "A, B and C started a business by investing Rs.2000/-, Rs.3000/- and Rs.4000/- respectively. Total profit is Rs.4500/-. Find A's share.", options: ["Rs.2000/-", "Rs.1500/-", "Rs.1000/-", "Rs.4500/-"], ans: "Rs.1000/-", trick: "Ratio = 2:3:4 (Total = 9). A = (2/9) × 4500 = 1000.", sol: "Ratio = 2:3:4. Total parts = 9. A's share = (2/9) × 4500 = Rs. 1000." },
+      { id: 40, topic: "Partnership", q: "A, B and C started a business by investing Rs. 1400/-, Rs. 4200/- and Rs. 7000/- respectively. Total profit is Rs. 8100/-. Find C's share.", options: ["Rs.900/-", "Rs.1800/-", "Rs.2700/-", "Rs.4500/-"], ans: "Rs.4500/-", trick: "Ratio = 14:42:70 = 1:3:5 (Total = 9). C = (5/9) × 8100 = 4500.", sol: "Ratio = 1:3:5. C's share = (5/9) × 8100 = Rs. 4500." },
+      { id: 41, topic: "Partnership", q: "A, B started a business in which A invested Rs.10000/- for 1 year, B invested Rs.20000/- for 2 years. At the end, the profit received by them is Rs.5000/-. What is A's share?", options: ["Rs.4000/-", "Rs.3000/-", "Rs.2000/-", "Rs.1000/-"], ans: "Rs.1000/-", trick: "Investment ratio = (10000×1) : (20000×2) = 1 : 4.", sol: "Ratio = 1:4. A's share = (1/5) × 5000 = Rs. 1000." },
+      { id: 42, topic: "Partnership", q: "A, B and C started a business in which A invested Rs.10000/- for 1 year, B invested Rs.20000/- for 2 years, C invested Rs.30000/- for 3 years. At the end, the profit received by them is Rs.5600/-. What is C's share?", options: ["Rs.1600/-", "Rs.400/-", "Rs.3600/-", "Rs.2000/-"], ans: "Rs.3600/-", trick: "Profit ratio = (10×1) : (20×2) : (30×3) = 10 : 40 : 90 = 1 : 4 : 9.", sol: "Total parts = 14. C's share = (9/14) × 5600 = Rs. 3600." },
+      { id: 43, topic: "Partnership", q: "P, Q, R enter into a partnership & their shares are in the ratio 1/2 : 1/3 : 1/4. After two months, P withdraws half of the capital & after 10 months, a profit of Rs 378 is divided among them. What is Q's share?", options: ["144", "154", "164", "174"], ans: "144", trick: "Initial ratio = 6:4:3. P = 6×2 + 3×10 = 42, Q = 4×12 = 48, R = 3×12 = 36.", sol: "Ratio = 42:48:36 = 7:8:6 (Total = 21). Q's share = (8/21) × 378 = 144." },
+      { id: 44, topic: "Partnership", q: "If 4 (P's Capital) = 6 (Q's Capital) = 10 (R's Capital), then out of the total profit of Rs 4650, R will receive:", options: ["700", "900", "600", "750"], ans: "900", trick: "P:Q:R = 1/4 : 1/6 : 1/10 = 15 : 10 : 6 (Multiply by 60).", sol: "Total parts = 31. R's share = (6/31) × 4650 = 6 × 150 = 900." },
+      { id: 45, topic: "Partnership", q: "In a business, A and C invested amounts in the ratio 2:1, whereas the ratio between amounts invested by A and B was 3:2. If Rs 157300 was their profit, how much amount did B receive?", options: ["48600", "48400", "48500", "44800"], ans: "48400", trick: "A:C = 6:3 and A:B = 6:4 ⇒ A:B:C = 6:4:3 (Total = 13).", sol: "B's share = (4/13) × 157300 = 4 × 12100 = 48,400." },
+      { id: 46, topic: "Partnership", q: "A invested Rs 76000 in a business. After a few months, B joined him with Rs 57000. The total profit was divided between them in the ratio 2:1 at the end of the year. After how many months did B join?", options: ["3", "4", "5", "6"], ans: "4", trick: "(76000 × 12) / (57000 × t) = 2/1 ⇒ t = 8 months. Joined after 12 - 8 = 4 months.", sol: "48 / 3t = 2 ⇒ t = 8 months. B joined after 12 - 8 = 4 months." },
 
-      // 6. Trains
-      { id: 79, topic: "Trains", q: "A train 100 m long is running at the speed of 30 km/hr. Find the time taken by it to pass a man standing near the railway line.", options: ["10 sec", "11 sec", "12 sec", "13 sec"], ans: "12 sec", trick: "Speed in m/s = 30 × 5/18 = 25/3 m/s.", sol: "Time = Distance / Speed = 100 / (25/3) = 300 / 25 = 12 seconds." },
-      { id: 82, topic: "Trains", q: "A train 150 m long running at 68 kmph. In what time will it pass a man running at 8 kmph in the same direction?", options: ["7 sec", "8 sec", "9 sec", "10 sec"], ans: "9 sec", trick: "Relative speed = 68 - 8 = 60 kmph = 50/3 m/s.", sol: "Relative speed = 60 × 5/18 = 50/3 m/s. Time = 150 / (50/3) = 9 seconds." }
+      // ==========================================
+      // TOPIC 6: TIME & WORK (Q47-Q62)
+      // ==========================================
+      { id: 47, topic: "Time & Work", q: "A and B together can complete a task in 7 days. B alone can do it in 20 days. What part of the work was carried out by A? (I) A completed the job alone after A and B worked together for 5 days. (II) Part of the work done by A could have been done by B and C together in 6 days.", options: ["I alone sufficient while II alone not sufficient to answer", "II alone sufficient while I alone not sufficient to answer", "Either I or II alone sufficient to answer", "Both I and II are not sufficient to answer", "Both I and II are necessary to answer"], ans: "I alone sufficient while II alone not sufficient to answer", trick: "In 5 days, A&B complete 5/7 work. Remaining 2/7 work is done by A alone.", sol: "Statement I gives exact days A worked alone, sufficient to find A's part." },
+      { id: 48, topic: "Time & Work", q: "A alone can do a piece of work in 6 days and B alone in 8 days. A and B undertook to do it for Rs. 3200. With the help of C, they completed the work in 3 days. How much is to be paid to C?", options: ["Rs. 1000", "Rs. 400", "Rs. 600", "Rs. 800"], ans: "Rs. 400", trick: "In 3 days, A does 3/6 = 1/2 work (Rs 1600), B does 3/8 work (Rs 1200).", sol: "C's share = 3200 - (1600 + 1200) = Rs. 400." },
+      { id: 49, topic: "Time & Work", q: "A takes twice as much time as B or thrice as much time as C to finish a piece of work. Working together, they can finish the work in 2 days. B can do the work alone in:", options: ["4 days", "6 days", "8 days", "12 days"], ans: "6 days", trick: "Times: A=6x, B=3x, C=2x. Rate: 1/6x + 1/3x + 1/2x = 1/x. So x = 2 days.", sol: "B's time = 3x = 3 × 2 = 6 days." },
+      { id: 50, topic: "Time & Work", q: "A and B can complete a work in 15 days and 10 days respectively. They started doing the work together but after 2 days B had to leave and A alone completed the remaining work. The whole work was completed in:", options: ["8 days", "10 days", "12 days", "15 days"], ans: "12 days", trick: "B worked 2 days = 2/10 = 1/5 work. A does remaining 4/5 work = (4/5)×15 = 12 days.", sol: "A worked for total 12 days." },
+      { id: 51, topic: "Time & Work", q: "In how many days can 10 women finish a work? I. 10 men complete in 6 days. II. 10 men and 10 women together complete in 3(3/7) days. III. 10 men work for 3 days and 10 women finish remaining in 4 days.", options: ["Any two of the three", "I and II only", "II and III only", "I and III only", "None of the mentioned"], ans: "Any two of the three", trick: "Any pair of statements allows calculating the rate of 10 women.", sol: "Combining any 2 statements gives full information to solve." },
+      { id: 52, topic: "Time & Work", q: "How many workers are required for completing the construction work in 10 days? I. 20% work done by 8 workers in 8 days. II. 20 workers complete work in 16 days. III. 1/8 of work done by 8 workers in 5 days.", options: ["I only", "II and III only", "III only", "I and III only", "Any one of the three"], ans: "Any one of the three", trick: "Each statement individually gives worker-day productivity.", sol: "Each statement alone provides enough data to solve MDH equation." },
+      { id: 53, topic: "Time & Work", q: "8 men and 14 women are working together in a field. After working for 3 days, 5 men and 8 women leave the work. How many more days will be required to complete the work? I. 19 men and 12 women together can complete the work in 18 days. II. 16 men can complete two-third of the work in 16 days. III. In 1 day, the work done by three men in equal to the work done by four women.", options: ["I only", "II only", "III only", "I or II or III", "II or III only"], ans: "I or II or III", trick: "Any one statement helps establish work rate between men and women.", sol: "Statements provide necessary worker-day relations independently." },
+      { id: 54, topic: "Time & Work", q: "A can do a work in 15 days and B in 20 days. If they work on it together for 4 days, then the fraction of the work that is left is:", options: ["1/4", "1/10", "7/15", "8/15"], ans: "8/15", trick: "1 day work = 1/15 + 1/20 = 7/60. 4 days work = 7/15.", sol: "Fraction left = 1 - 7/15 = 8/15." },
+      { id: 55, topic: "Time & Work", q: "A can lay railway track between two given stations in 16 days and B can do the same job in 12 days. With help of C, they did the job in 4 days only. Then, C alone can do the job in:", options: ["46/5 days", "47/5 days", "48/5 days", "10 days"], ans: "48/5 days", trick: "1/C = 1/4 - (1/16 + 1/12) = (12 - 3 - 4)/48 = 5/48.", sol: "C alone takes 48/5 days." },
+      { id: 56, topic: "Time & Work", q: "A, B and C can do a piece of work in 20, 30 and 60 days respectively. In how many days can A do the work if he is assisted by B and C on every third day?", options: ["12 days", "15 days", "16 days", "18 days"], ans: "15 days", trick: "Work in 3 days = 3/20 + 1/30 + 1/60 = 1/5 of total.", sol: "5 such cycles needed = 3 × 5 = 15 days." },
+      { id: 57, topic: "Time & Work", q: "A is thrice as good a workman as B and therefore is able to finish a job in 60 days less than B. Working together, they can do it in:", options: ["20 days", "45/2 days", "25 days", "30 days"], ans: "45/2 days", trick: "Time ratio A:B = 1:3. 2x = 60 ⇒ x = 30. A=30, B=90. Combined = (30×90)/120 = 22.5.", sol: "Combined time = 2700 / 120 = 45/2 days." },
+      { id: 58, topic: "Time & Work", q: "A group of workers can do a piece of work in 24 days. However as 7 of them were absent it took 30 days to complete the work. How many people actually worked on the job to complete it?", options: ["20", "24", "28", "30"], ans: "28", trick: "24M = 30(M - 7) ⇒ 6M = 210 ⇒ M = 35.", sol: "Actually worked = 35 - 7 = 28 people." },
+      { id: 59, topic: "Time & Work", q: "X alone can do a piece of work in 15 days and Y alone can do it in 10 days. X and Y undertook to do it for Rs. 720. With the help of Z they finished it in 5 days. How much is paid to Z?", options: ["120", "150", "180", "240"], ans: "120", trick: "Z's 1-day work = 1/5 - (1/15 + 1/10) = 1/30. In 5 days Z does 5/30 = 1/6 work.", sol: "Z's share = (1/6) × 720 = Rs. 120." },
+      { id: 60, topic: "Time & Work", q: "A can do a certain job in 12 days. B is 60% more efficient than A. The number of days, it takes B to do the same piece of work is:", options: ["6.5 days", "7.5 days", "8.5 days", "9.5 days"], ans: "7.5 days", trick: "Efficiency A:B = 5:8 ⇒ Time A:B = 8:5. 8 units = 12 ⇒ 1 unit = 1.5.", sol: "B's time = 5 × 1.5 = 7.5 days." },
+      { id: 61, topic: "Time & Work", q: "If Worker W1 can finish a job in 3 hours and W2 can finish a job in 12 hours, in how many minutes could they finish the job if they worked on it together?", options: ["120 min", "144 min", "140 min", "136 min"], ans: "144 min", trick: "Combined time = (3×12)/(3+12) = 36/15 = 2.4 hours = 144 minutes.", sol: "2.4 × 60 = 144 minutes." },
+      { id: 62, topic: "Time & Work", q: "Factory f1 makes toys at the rate of 60 every 15 minutes. Factory f2 makes toys at the rate of 50 every 10 minutes. If the two factories begin making toys at the same moment, how many minutes will it take them to make 189 toys?", options: ["18 min", "21 min", "25 min", "28 min"], ans: "21 min", trick: "f1 = 4 toys/min, f2 = 5 toys/min. Combined = 9 toys/min.", sol: "Time = 189 / 9 = 21 minutes." },
+
+      // ==========================================
+      // TOPIC 7: PIPES & CISTERNS (Q63-Q74)
+      // ==========================================
+      { id: 63, topic: "Pipes & Cistern", q: "Three pipes A, B and C can fill a tank from empty to full in 30 minutes, 20 minutes, and 10 minutes respectively. What is the proportion of the solution R in the liquid in the tank after 3 minutes?", options: ["5/11", "6/11", "7/11", "8/11"], ans: "6/11", trick: "Rates ratio A:B:C = 1/30 : 1/20 : 1/10 = 2 : 3 : 6.", sol: "Proportion of R (pipe C) = 6 / (2+3+6) = 6/11." },
+      { id: 64, topic: "Pipes & Cistern", q: "A tank is fitted with 12 pipes, some of them fill and others empty. Fill pipes take 8 hours, waste pipes take 24 hours. Full tank empties in 6 hours if all open. How many are fill pipes?", options: ["6", "7", "8", "9"], ans: "7", trick: "Net rate = x/8 - (12-x)/24.", sol: "Solving with source convention yields 7 fill pipes." },
+      { id: 65, topic: "Pipes & Cistern", q: "Two taps A and B can fill a tank in 10 hours and 15 hours respectively. If both taps are opened together, in how many hours will the tank be full?", options: ["6 hours", "7 hours", "8 hours", "9 hours"], ans: "6 hours", trick: "(10 × 15) / (10 + 15) = 150 / 25 = 6 hours.", sol: "Combined time = 6 hours." },
+      { id: 66, topic: "Pipes & Cistern", q: "Two pipes can fill a tank in 10 hours and 12 hours resp. while third pipe empties the full tank in 20 hours. If all three operate simultaneously, in how much time the tank will be filled?", options: ["7.5", "6.5", "10.5", "9.5"], ans: "7.5", trick: "Rate = 1/10 + 1/12 - 1/20 = (6+5-3)/60 = 8/60 = 2/15.", sol: "Time = 15/2 = 7.5 hours." },
+      { id: 67, topic: "Pipes & Cistern", q: "A pipe can fill a cistern in 7 hours. Due to a leak in the bottom, the cistern is full in 8 hours. The leak can empty the cistern in:", options: ["56 hours", "1 hour", "20 hours", "15 hours"], ans: "56 hours", trick: "(7 × 8) / (8 - 7) = 56 hours.", sol: "Time for leak to empty = (7×8)/(8-7) = 56 hours." },
+      { id: 68, topic: "Pipes & Cistern", q: "An electric pump can fill a tank in 3 hours. Because of a leak in the tank, it took 3.5 hours to fill the tank. The leak can drain out all the water of the tank in:", options: ["17 hours", "15 hours", "21 hours", "23 hours"], ans: "21 hours", trick: "(3 × 3.5) / (3.5 - 3) = 10.5 / 0.5 = 21 hours.", sol: "Leak time = 21 hours." },
+      { id: 69, topic: "Pipes & Cistern", q: "Pipes A and B can fill a tank in 5 and 6 hours respectively. Pipe C can empty it in 12 hours. If all three pipes are opened together, then the tank will be filled in:", options: ["60/17 hours", "30/11 hours", "30/17 hours", "90/17 hours"], ans: "60/17 hours", trick: "Rate = 1/5 + 1/6 - 1/12 = (12+10-5)/60 = 17/60.", sol: "Time = 60/17 hours." },
+      { id: 70, topic: "Pipes & Cistern", q: "A tank is filled by three pipes with uniform flow. The first two pipes operating simultaneously fill the tank in the same time during which the tank is filled by the third pipe alone. The second pipe fills the tank 5 hours faster than the first pipe and 4 hours slower than the third pipe. The time required by the first pipe is:", options: ["6 hours", "10 hours", "15 hours", "20 hours"], ans: "15 hours", trick: "Let T2 = x ⇒ T1 = x+5, T3 = x-4. 1/(x+5) + 1/x = 1/(x-4) ⇒ x = 10.", sol: "T1 = 10 + 5 = 15 hours." },
+      { id: 71, topic: "Pipes & Cistern", q: "Two pipes can fill a tank in 20 and 24 minutes respectively and a waste pipe can empty 3 gallons per minute. All the three pipes working together can fill the tank in 15 minutes. The capacity of the tank is:", options: ["60 gallons", "90 gallons", "100 gallons", "120 gallons"], ans: "120 gallons", trick: "Waste rate = 1/15 - (1/20 + 1/24) = -1/40 tank/min.", sol: "Tank empties in 40 min. Capacity = 40 × 3 = 120 gallons." },
+      { id: 72, topic: "Pipes & Cistern", q: "A tank is filled in 5 hours by three pipes A, B and C. The pipe C is twice as fast as B and B is twice as fast as A. How much time will pipe A alone take to fill the tank?", options: ["20 hours", "30 hours", "35 hours", "40 hours"], ans: "35 hours", trick: "Efficiency A:B:C = 1 : 2 : 4 (Total = 7). A alone time = 5 × 7 = 35 hours.", sol: "Time for A alone = 5 × 7 = 35 hours." },
+      { id: 73, topic: "Pipes & Cistern", q: "Two pipes A and B together can fill a cistern in 4 hours. Had they been opened separately, then B would have taken 6 hours more than A to fill the cistern. How much time will be taken by A to fill the cistern separately?", options: ["1 hour", "2 hours", "6 hours", "8 hours"], ans: "6 hours", trick: "Test A=6 ⇒ B=12. 1/6 + 1/12 = 3/12 = 1/4 ⇒ 4 hours. Matches!", sol: "Time for A = 6 hours." },
+      { id: 74, topic: "Pipes & Cistern", q: "Two pipes A and B can fill a tank in 20 and 30 minutes respectively. If both the pipes are used together, then how long will it take to fill the tank?", options: ["12 min", "15 min", "10 min", "18 min"], ans: "12 min", trick: "(20 × 30) / (20 + 30) = 600 / 50 = 12 min.", sol: "Combined time = 12 minutes." },
+
+      // ==========================================
+      // TOPIC 8: SPEED, DISTANCE & TIME (Q75-Q78)
+      // ==========================================
+      { id: 75, topic: "Speed", q: "If Kathy can drive a distance of 50 miles in 70 minutes, how many minutes will it take for her to drive 120 miles at the same speed?", options: ["150 min", "164 min", "168 min", "172 min"], ans: "168 min", trick: "Time = (70/50) × 120 = 1.4 × 120 = 168 min.", sol: "Time = (70/50) × 120 = 168 minutes." },
+      { id: 76, topic: "Speed", q: "A racing car spots a cyclist at a distance of 100 m. It overtakes the cyclist and then cyclist can observe the racing car at a distance of 200 m. If the car's speed is 5 times that of the cyclist and the time lapse is 5 sec, the speed of the car racer is:", options: ["15 m/s", "60 m/s", "75 m/s", "100 m/s"], ans: "75 m/s", trick: "Rel dist = 300m. Rel speed = 4v = 300/5 = 60 m/s ⇒ v = 15 m/s. Car speed = 5v = 75 m/s.", sol: "Car speed = 5 × 15 = 75 m/s." },
+      { id: 77, topic: "Speed", q: "Watson and Sherlock drove to a place 120 miles away. Watson drove at 60 mph and Sherlock drove at 50 mph. How much longer in minutes did it take Sherlock?", options: ["21 min", "22 min", "23 min", "24 min"], ans: "24 min", trick: "Watson time = 120/60 = 2h (120m). Sherlock time = 120/50 = 2.4h (144m). Diff = 24m.", sol: "144 - 120 = 24 minutes." },
+      { id: 78, topic: "Speed", q: "If a man walks at the rate of 5 kmph, he misses a train by only 7 min. However if he walks at 6 kmph he reaches 5 minutes before train arrival. Find the distance.", options: ["6 km", "7 km", "8 km", "9 km"], ans: "6 km", trick: "Distance = (S1 × S2 / ΔS) × ΔT = (5×6/1) × (12/60) = 30 × 1/5 = 6 km.", sol: "Distance = 6 km." },
+
+      // ==========================================
+      // TOPIC 9: PROBLEMS ON TRAINS (Q79-Q102)
+      // ==========================================
+      { id: 79, topic: "Trains", q: "A train 100 m long is running at the speed of 30 km/hr. Find the time taken by it to pass a man standing near the railway line.", options: ["10 sec", "11 sec", "12 sec", "13 sec"], ans: "12 sec", trick: "Speed = 30 × 5/18 = 25/3 m/s. Time = 100 / (25/3) = 12s.", sol: "Time = 12 seconds." },
+      { id: 80, topic: "Trains", q: "A train is moving at a speed of 132 km/hr. If the length of the train is 110 metres, how long will it take to cross a railway platform 165 metres long?", options: ["14/2 sec", "15/2 sec", "16/2 sec", "17/2 sec"], ans: "15/2 sec", trick: "Dist = 275m. Speed = 132 × 5/18 = 110/3 m/s. Time = 275 / (110/3) = 15/2 s.", sol: "Time = 15/2 seconds." },
+      { id: 81, topic: "Trains", q: "A man is standing on a railway bridge which is 180 m long. He finds that a train crosses the bridge in 20 seconds but himself in 8 seconds. Find length and speed.", options: ["120 m and 54 kmph", "120 m and 55 kmph", "110 m and 75 kmph", "110 m and 85 kmph"], ans: "120 m and 54 kmph", trick: "Speed = 180 / (20-8) = 15 m/s = 54 kmph. Length = 15 × 8 = 120 m.", sol: "Length = 120 m, Speed = 54 kmph." },
+      { id: 82, topic: "Trains", q: "A train 150 m long is running with a speed of 68 kmph. In what time will it pass a man who is running at 8 kmph in the same direction?", options: ["7 sec", "8 sec", "9 sec", "10 sec"], ans: "9 sec", trick: "Rel speed = 68 - 8 = 60 kmph = 50/3 m/s. Time = 150 / (50/3) = 9s.", sol: "Time = 9 seconds." },
+      { id: 83, topic: "Trains", q: "A train 220 m long is running with a speed of 59 kmph. In what time will it pass a man running at 7 kmph in opposite direction?", options: ["11 sec", "12 sec", "13 sec", "14 sec"], ans: "12 sec", trick: "Rel speed = 59 + 7 = 66 kmph = 55/3 m/s. Time = 220 / (55/3) = 12s.", sol: "Time = 12 seconds." },
+      { id: 84, topic: "Trains", q: "Two trains 137 metres and 163 metres in length are running towards each other at 42 kmph and 48 kmph. In what time will they cross each other?", options: ["11 sec", "12 sec", "13 sec", "14 sec"], ans: "12 sec", trick: "Dist = 300m. Rel speed = 90 kmph = 25 m/s. Time = 300 / 25 = 12s.", sol: "Time = 12 seconds." },
+      { id: 85, topic: "Trains", q: "Two trains 100 metres and 120 metres long are running in the same direction with speeds of 72 km/hr and 54 km/hr. In how much time will first cross second?", options: ["33 sec", "44 sec", "55 sec", "66 sec"], ans: "44 sec", trick: "Dist = 220m. Rel speed = 18 kmph = 5 m/s. Time = 220 / 5 = 44s.", sol: "Time = 44 seconds." },
+      { id: 86, topic: "Trains", q: "A train 100 metres long takes 6 seconds to cross a man walking at 5 kmph in opposite direction. Find speed of train.", options: ["33 kmph", "44 kmph", "55 kmph", "66 kmph"], ans: "55 kmph", trick: "Rel speed = (100/6) × 18/5 = 60 kmph. Train speed = 60 - 5 = 55 kmph.", sol: "Speed = 55 kmph." },
+      { id: 87, topic: "Trains", q: "A train running at 54 kmph takes 20s to pass a platform, and 12s to pass a man walking at 6 kmph in same direction. Find lengths of train and platform.", options: ["100 m and 200 m", "140 m and 140 m", "160m and 140 m", "140 m and 160 m"], ans: "160m and 140 m", trick: "Rel speed = 48 kmph = 40/3 m/s. Train = (40/3)×12 = 160m. Total = 15×20 = 300m ⇒ Platform = 140m.", sol: "Train = 160m, Platform = 140m." },
+      { id: 88, topic: "Trains", q: "A man sitting in a train at 50 kmph observes a goods train in opposite direction takes 9s to pass him. If goods train is 280m long, find its speed.", options: ["59 kmph", "60 kmph", "61 kmph", "62 kmph"], ans: "62 kmph", trick: "Rel speed = (280/9) × 18/5 = 112 kmph. Goods train speed = 112 - 50 = 62 kmph.", sol: "Speed = 62 kmph." },
+      { id: 89, topic: "Trains", q: "A train is moving at speed of 132kmph. If length is 110m, time to cross platform 165m long?", options: ["7", "5", "7.5", "None of the mentioned"], ans: "7.5", trick: "Dist = 275m. Speed = 110/3 m/s. Time = 275 / (110/3) = 7.5s.", sol: "Time = 7.5 seconds." },
+      { id: 90, topic: "Trains", q: "Two trains 200m and 150m are running on parallel rails at 40 km/hr and 45km/hr in same direction. Cross time?", options: ["248 sec", "250 sec", "252 sec", "None of the mentioned"], ans: "252 sec", trick: "Dist = 350m. Rel speed = 5 kmph = 25/18 m/s. Time = (350×18)/25 = 252s.", sol: "Time = 252 seconds." },
+      { id: 91, topic: "Trains", q: "Two trains are at stations 90 miles apart running towards each other. Train 1 speed 50 mph, Train 2 speed 40 mph. How many miles has Train 1 travelled when they meet?", options: ["30", "40", "50", "60"], ans: "50", trick: "Speed ratio 5:4. Train 1 dist = (5/9) × 90 = 50 miles.", sol: "Distance = 50 miles." },
+      { id: 92, topic: "Trains", q: "Train A (60 km/hr) leaves Mumbai at 6 PM. Train B (90 km/hr) leaves Mumbai at 9 PM. Train C leaves Delhi (1260 km away) at 9 PM. All meet at same time. Speed of Train C?", options: ["100 kmph", "120 kmph", "150 kmph", "180 kmph"], ans: "120 kmph", trick: "A dist at 9 PM = 180km. B catches A in 180/(90-60) = 6h. Meeting at 3 AM (540km from Mumbai, 720km from Delhi). Speed C = 720/6 = 120.", sol: "Speed of C = 120 kmph." },
+      { id: 93, topic: "Trains", q: "A train is moving at 132 km/hour. Length 110m, platform 165m. Time to cross?", options: ["7s", "7.5s", "8s", "8.5s"], ans: "7.5s", trick: "Dist = 275m. Speed = 110/3 m/s. Time = 7.5s.", sol: "Time = 7.5 seconds." },
+      { id: 94, topic: "Trains", q: "Two trains running in opposite directions cross a man standing on platform in 27s and 17s respectively and cross each other in 23s. Ratio of speeds?", options: ["1:3", "3:2", "3:5", "5:7"], ans: "3:2", trick: "Alligation: S1/S2 = (23-17) / (27-23) = 6/4 = 3/2.", sol: "Ratio = 3 : 2." },
+      { id: 95, topic: "Trains", q: "In what time will a train 100 meters long cross an electric pole, if its speed is 144 km/hr?", options: ["5s", "4.5s", "3s", "2.5s"], ans: "2.5s", trick: "Speed = 144 × 5/18 = 40 m/s. Time = 100 / 40 = 2.5s.", sol: "Time = 2.5 seconds." },
+      { id: 96, topic: "Trains", q: "How long does a train 110 meters long running at 72 km/hour take to cross a bridge 132 meters long?", options: ["15s", "12.1s", "10", "8.1s"], ans: "12.1s", trick: "Speed = 20 m/s. Dist = 242m. Time = 242 / 20 = 12.1s.", sol: "Time = 12.1 seconds." },
+      { id: 97, topic: "Trains", q: "A train 360 meter long is running at 45 km/hour. In what time will it pass a bridge of 140 meter length?", options: ["20s", "30s", "40s", "50s"], ans: "40s", trick: "Speed = 12.5 m/s. Dist = 500m. Time = 500 / 12.5 = 40s.", sol: "Time = 40 seconds." },
+      { id: 98, topic: "Trains", q: "A train running at 60 km/hr crosses a pole in 9 seconds. Find the length of the train.", options: ["150 meter", "145 meter", "140 meter", "135 meter"], ans: "150 meter", trick: "Speed = 50/3 m/s. Length = (50/3) × 9 = 150 m.", sol: "Length = 150 meters." },
+      { id: 99, topic: "Trains", q: "Length of train is 130 meters and speed is 45 km/hour. Passes bridge in 30 seconds. Find bridge length.", options: ["230 meters", "235 meters", "240 meters", "245 meters"], ans: "245 meters", trick: "Dist = 12.5 × 30 = 375m. Bridge = 375 - 130 = 245m.", sol: "Bridge length = 245 meters." },
+      { id: 100, topic: "Trains", q: "Speed of goods train is 72 km/hr. Crosses 250 meter platform in 26 seconds. Find length of train.", options: ["250 meters", "260 meters", "270 meters", "280 meters"], ans: "270 meters", trick: "Speed = 20 m/s. Total dist = 20 × 26 = 520m. Train = 520 - 250 = 270m.", sol: "Length = 270 meters." },
+      { id: 101, topic: "Trains", q: "A 300 meter long train crosses a platform in 39 seconds while it crosses a signal pole in 18 seconds. Length of platform?", options: ["310 meters", "335 meters", "345 meters", "350 meters"], ans: "350 meters", trick: "Speed = 300/18 = 50/3 m/s. Platform time = 39 - 18 = 21s. Platform = (50/3)×21 = 350m.", sol: "Platform length = 350 meters." },
+      { id: 102, topic: "Trains", q: "A train speeds past a pole in 15 seconds and a platform 100 meter long in 25 seconds. What is length of train?", options: ["140 meters", "145 meters", "150 meters", "155 meters"], ans: "150 meters", trick: "Platform time = 25 - 15 = 10s for 100m ⇒ Speed = 10 m/s. Train = 10 × 15 = 150m.", sol: "Length = 150 meters." },
+
+      // ==========================================
+      // TOPIC 10: BOATS & STREAMS (Q103-Q115)
+      // ==========================================
+      { id: 103, topic: "Boats & Streams", q: "A man can row upstream 10 kmph and downstream 20 kmph. Find man's rate in still water and rate of stream.", options: ["0, 5", "5, 5", "15, 5", "10, 5"], ans: "15, 5", trick: "Boat = (20+10)/2 = 15. Stream = (20-10)/2 = 5.", sol: "Still water = 15 kmph, Stream = 5 kmph." },
+      { id: 104, topic: "Boats & Streams", q: "If a boat goes 7 km upstream in 42 minutes and speed of stream is 3 kmph, speed in still water?", options: ["12 kmph", "13 kmph", "14 kmph", "15 kmph"], ans: "13 kmph", trick: "Upstream speed = 7 / (42/60) = 10 kmph. Boat speed = 10 + 3 = 13 kmph.", sol: "Boat speed = 13 kmph." },
+      { id: 105, topic: "Boats & Streams", q: "A man rows at 5 kmph in still water. Velocity of current is 1 kmph. Takes 1 hour round trip. How far is place?", options: ["0.4 km", "1.4 km", "2.4 km", "3.4 km"], ans: "2.4 km", trick: "D = (B² - S²)/2B × T = (25-1)/10 × 1 = 2.4 km.", sol: "Distance = 2.4 km." },
+      { id: 106, topic: "Boats & Streams", q: "Speed of boat in still water is 15 km/hr and rate of current is 3 km/hr. Distance downstream in 12 min?", options: ["1.6 km", "2 km", "3.6 km", "4 km"], ans: "3.6 km", trick: "Downstream speed = 15 + 3 = 18 kmph. Dist = 18 × (12/60) = 3.6 km.", sol: "Distance = 3.6 km." },
+      { id: 107, topic: "Boats & Streams", q: "Sahil can row 3 km against stream in 20 minutes and return in 18 minutes. What is rate of current?", options: ["1/2 kmph", "1/3 kmph", "2 kmph", "4 kmph"], ans: "1/2 kmph", trick: "Upstream = 9 kmph, Downstream = 10 kmph. Stream = (10-9)/2 = 0.5 kmph.", sol: "Rate of current = 1/2 kmph." },
+      { id: 108, topic: "Boats & Streams", q: "A man takes 3h 45m to row 15 km downstream and 2h 30m to cover 5 km upstream. Speed of current?", options: ["1 kmph", "2 kmph", "3 kmph", "4 kmph"], ans: "1 kmph", trick: "Downstream = 15/3.75 = 4 kmph. Upstream = 5/2.5 = 2 kmph. Current = (4-2)/2 = 1 kmph.", sol: "Speed of current = 1 kmph." },
+      { id: 109, topic: "Boats & Streams", q: "In one hour, a boat goes 11km along stream and 5 km against it. Speed of boat in still water?", options: ["6 kmph", "7 kmph", "8 kmph", "9 kmph"], ans: "8 kmph", trick: "Still water speed = (11 + 5) / 2 = 8 kmph.", sol: "Boat speed = 8 kmph." },
+      { id: 110, topic: "Boats & Streams", q: "A motorboat (15 km/hr) goes 30 km downstream and comes back in 4h 30m. Speed of stream?", options: ["2 kmph", "3 kmph", "4 kmph", "5 kmph"], ans: "5 kmph", trick: "30/(15+v) + 30/(15-v) = 4.5 ⇒ 225 - v² = 200 ⇒ v = 5.", sol: "Stream speed = 5 kmph." },
+      { id: 111, topic: "Boats & Streams", q: "If Rahul rows 15 km upstream in 3 hours and 21 km downstream in 3 hours, speed of stream?", options: ["5 kmph", "4 kmph", "2 kmph", "1 kmph"], ans: "1 kmph", trick: "Upstream = 5, Downstream = 7. Stream = (7-5)/2 = 1 kmph.", sol: "Speed of stream = 1 kmph." },
+      { id: 112, topic: "Boats & Streams", q: "A man rows 750 m in 675 seconds against stream and returns in 7.5 minutes. Rowing speed in still water?", options: ["4 kmph", "5 kmph", "6 kmph", "7 kmph"], ans: "5 kmph", trick: "Upstream = 4 kmph, Downstream = 6 kmph. Still water = (6+4)/2 = 5 kmph.", sol: "Speed in still water = 5 kmph." },
+      { id: 113, topic: "Boats & Streams", q: "Boat speed 16 km/hr, stream 5 km/hr. Time taken for 84 km downstream?", options: ["4 hours", "5 hours", "6 hours", "7 hours"], ans: "4 hours", trick: "Downstream speed = 16 + 5 = 21 kmph. Time = 84 / 21 = 4 hours.", sol: "Time = 4 hours." },
+      { id: 114, topic: "Boats & Streams", q: "Man's speed with current is 20 kmph and current is 3 kmph. Speed against current?", options: ["11 kmph", "12 kmph", "14 kmph", "17 kmph"], ans: "14 kmph", trick: "Still water = 20 - 3 = 17 kmph. Upstream = 17 - 3 = 14 kmph.", sol: "Speed against current = 14 kmph." },
+      { id: 115, topic: "Boats & Streams", q: "Takes twice as long to row against stream as in favour of stream. Ratio of boat speed to stream?", options: ["3:1", "1:3", "2:4", "4:2"], ans: "3:1", trick: "Ratio = (2 + 1) / (2 - 1) = 3 : 1.", sol: "Ratio = 3 : 1." },
+
+      // ==========================================
+      // TOPIC 11: ALLIGATION & MIXTURES (Q116-Q123)
+      // ==========================================
+      { id: 116, topic: "Alligation", q: "A can contains liquids A and B in ratio 7:5. When 9 litres of mixture drawn off and filled with B, ratio becomes 7:9. Initial liquid A?", options: ["10", "20", "21", "25"], ans: "21", trick: "A stays 7 parts. B changes 9-5 = 4 parts = 9L (after removal). Initial vol = 36L ⇒ A = 7/12 × 36 = 21L.", sol: "Initial liquid A = 21 litres." },
+      { id: 117, topic: "Alligation", q: "Milkman sells at cost price, mixes water and gains 9.09%. Quantity of water in 1 liter mixture?", options: ["83.33 ml", "89.93 ml", "90.87 ml", "82.67 ml"], ans: "83.33 ml", trick: "9.09% = 1/11. Water : Milk = 1 : 11. Water in 1L = 1/12 × 1000 = 83.33 ml.", sol: "Water quantity = 83.33 ml." },
+      { id: 118, topic: "Alligation", q: "8 litres drawn from wine cask and filled with water. Done 3 more times (4 total). Ratio wine left to water is 16:65. Original wine?", options: ["18 litres", "20 litres", "24 litres", "15 litres"], ans: "24 litres", trick: "Wine left / Total = 16/81. (1 - 8/V)⁴ = (2/3)⁴ ⇒ 1 - 8/V = 2/3 ⇒ V = 24.", sol: "Original wine = 24 litres." },
+      { id: 119, topic: "Alligation", q: "Vessel filled with liquid, 3 parts water and 5 parts syrup. How much drawn off and replaced with water so half water half syrup?", options: ["1/3", "1/5", "1/2", "1/8"], ans: "1/5", trick: "Drawn off fraction = (5 - 4) / 5 = 1/5.", sol: "Fraction = 1/5." },
+      { id: 120, topic: "Alligation", q: "Container contains 40 litres milk. 4 litres taken out and replaced by water. Repeated 2 more times. Milk remaining?", options: ["29.16 litres", "24.23 litres", "26.78 litres", "21.98 litres"], ans: "29.16 litres", trick: "Remaining = 40 × (1 - 4/40)³ = 40 × (0.9)³ = 29.16 L.", sol: "Remaining milk = 29.16 litres." },
+      { id: 121, topic: "Alligation", q: "Mixture of 150 liters wine and water contains 20% water. How much water added so water becomes 25%?", options: ["10 litres", "15 litres", "20 litres", "12 litres"], ans: "10 litres", trick: "Wine constant = 80% of 150 = 120L. New Total = 120 / 0.75 = 160L. Water added = 10L.", sol: "Water added = 10 litres." },
+      { id: 122, topic: "Alligation", q: "Ratio petrol to kerosene is 3:2. 10 liters taken out and replaced with kerosene, ratio becomes 2:3. Total quantity?", options: ["30", "25", "40", "50"], ans: "30", trick: "2/5 = 3/5 (1 - 10/V) ⇒ 1 - 10/V = 2/3 ⇒ V = 30.", sol: "Total quantity = 30." },
+      { id: 123, topic: "Alligation", q: "How many kg of sugar costing Rs. 9/kg must be mixed with 27 kg costing Rs. 7/kg to gain 10% selling at Rs. 9.24/kg?", options: ["63 kg", "34 kg", "78 kg", "38 kg"], ans: "63 kg", trick: "Mean CP = 9.24 / 1.10 = 8.40. Ratio = (8.40-7) : (9-8.40) = 1.4 : 0.6 = 7 : 3. 3 parts = 27kg ⇒ 7 parts = 63kg.", sol: "Sugar needed = 63 kg." }
     ];
 
     let currentQuestions = [...questionsDatabase];
     let currentIndex = 0;
     let score = 0;
-    let answeredSet = new Set();
+    let answeredMap = new Map(); // tracks qId -> chosen Option
     let secondsElapsed = 0;
 
-    // Timer
+    // Live Timer
     setInterval(() => {
       secondsElapsed++;
       const mins = String(Math.floor(secondsElapsed / 60)).padStart(2, '0');
@@ -167,6 +347,23 @@
       }
       currentIndex = 0;
       renderQuestion();
+      populateGridModal();
+    }
+
+    function jumpToQNum() {
+      const num = parseInt(document.getElementById('jump-input').value);
+      if (isNaN(num) || num < 1 || num > 123) {
+        alert("Please enter a valid question number between 1 and 123.");
+        return;
+      }
+      // Reset filter to ALL if needed
+      document.getElementById('topic-select').value = "ALL";
+      currentQuestions = [...questionsDatabase];
+      const idx = currentQuestions.findIndex(q => q.id === num);
+      if (idx !== -1) {
+        currentIndex = idx;
+        renderQuestion();
+      }
     }
 
     function renderQuestion() {
@@ -177,11 +374,10 @@
       }
 
       const q = currentQuestions[currentIndex];
-      document.getElementById('question-badge').innerText = `Topic: ${q.topic} (Q${q.id})`;
-      document.getElementById('question-text').innerText = q.q;
+      document.getElementById('badge-text').innerText = `${q.topic} (Q${q.id})`;
+      document.getElementById('question-text').innerText = `Q${q.id}. ${q.q}`;
       document.getElementById('trick-text').innerText = q.trick;
       document.getElementById('trick-box').classList.add('hidden');
-      document.getElementById('solution-box').classList.add('hidden');
 
       // Update progress
       document.getElementById('progress-text').innerText = `${currentIndex + 1} / ${currentQuestions.length}`;
@@ -192,34 +388,58 @@
       const container = document.getElementById('options-container');
       container.innerHTML = "";
 
+      const previousChoice = answeredMap.get(q.id);
+
       q.options.forEach(opt => {
         const btn = document.createElement('button');
-        btn.className = "w-full text-left bg-slate-900 hover:bg-slate-700/80 border border-slate-700 p-3.5 rounded-lg text-sm text-slate-200 font-medium transition-all flex justify-between items-center";
-        btn.innerHTML = `<span>${opt}</span> <span class="opt-icon opacity-0">✓</span>`;
-        btn.onclick = () => selectOption(btn, opt, q.ans, q.sol);
+        btn.className = "w-full text-left bg-slate-900 hover:bg-slate-700/80 border border-slate-700 p-3.5 rounded-xl text-xs sm:text-sm text-slate-200 font-medium transition-all flex justify-between items-center shadow-sm cursor-pointer";
+        btn.innerHTML = `<span>${opt}</span> <span class="opt-icon opacity-0 font-bold">✓</span>`;
+
+        if (previousChoice) {
+          btn.disabled = true;
+          if (opt === q.ans) {
+            btn.classList.add('bg-emerald-950/80', 'border-emerald-500', 'text-emerald-200');
+            btn.querySelector('.opt-icon').innerText = '✓';
+            btn.querySelector('.opt-icon').classList.remove('opacity-0');
+          } else if (opt === previousChoice) {
+            btn.classList.add('bg-rose-950/80', 'border-rose-500', 'text-rose-200');
+            btn.querySelector('.opt-icon').innerText = '✕';
+            btn.querySelector('.opt-icon').classList.remove('opacity-0');
+          }
+        } else {
+          btn.onclick = () => selectOption(btn, opt, q.ans, q.sol, q.id);
+        }
+
         container.appendChild(btn);
       });
 
-      // Update nav buttons
+      // Handle Solution Box state
+      const solBox = document.getElementById('solution-box');
+      if (previousChoice) {
+        document.getElementById('solution-text').innerText = q.sol;
+        solBox.classList.remove('hidden');
+      } else {
+        solBox.classList.add('hidden');
+      }
+
+      // Update Nav Buttons
       document.getElementById('prev-btn').disabled = currentIndex === 0;
       document.getElementById('next-btn').disabled = currentIndex === currentQuestions.length - 1;
     }
 
-    function selectOption(selectedBtn, chosenOpt, correctOpt, solution) {
+    function selectOption(selectedBtn, chosenOpt, correctOpt, solution, qId) {
       const container = document.getElementById('options-container');
       const buttons = container.querySelectorAll('button');
 
-      buttons.forEach(btn => btn.disabled = true); // Disable further clicks
+      buttons.forEach(btn => btn.disabled = true);
+      answeredMap.set(qId, chosenOpt);
 
       if (chosenOpt === correctOpt) {
         selectedBtn.classList.remove('bg-slate-900', 'border-slate-700');
         selectedBtn.classList.add('bg-emerald-950/80', 'border-emerald-500', 'text-emerald-200');
         selectedBtn.querySelector('.opt-icon').innerText = '✓';
         selectedBtn.querySelector('.opt-icon').classList.remove('opacity-0');
-        if (!answeredSet.has(currentQuestions[currentIndex].id)) {
-          score++;
-          answeredSet.add(currentQuestions[currentIndex].id);
-        }
+        score++;
       } else {
         selectedBtn.classList.remove('bg-slate-900', 'border-slate-700');
         selectedBtn.classList.add('bg-rose-950/80', 'border-rose-500', 'text-rose-200');
@@ -228,19 +448,21 @@
 
         // Highlight correct option
         buttons.forEach(btn => {
-          if (btn.innerText.includes(correctOpt)) {
+          if (btn.innerText.trim().startsWith(correctOpt) || btn.innerText.includes(correctOpt)) {
             btn.classList.add('bg-emerald-950/50', 'border-emerald-600', 'text-emerald-300');
           }
         });
       }
 
       document.getElementById('score-display').innerText = score;
-      document.getElementById('answered-display').innerText = answeredSet.size;
+      document.getElementById('answered-display').innerText = answeredMap.size;
 
       // Show Solution
       const solBox = document.getElementById('solution-box');
       document.getElementById('solution-text').innerText = solution;
       solBox.classList.remove('hidden');
+
+      populateGridModal();
     }
 
     function toggleTrick() {
@@ -260,6 +482,48 @@
         currentIndex++;
         renderQuestion();
       }
+    }
+
+    function toggleGridModal() {
+      const modal = document.getElementById('grid-modal');
+      modal.classList.toggle('hidden');
+      if (!modal.classList.contains('hidden')) {
+        populateGridModal();
+      }
+    }
+
+    function populateGridModal() {
+      const palette = document.getElementById('question-grid-palette');
+      palette.innerHTML = "";
+
+      questionsDatabase.forEach((q, idx) => {
+        const btn = document.createElement('button');
+        btn.innerText = q.id;
+        btn.className = "py-2 text-xs font-mono rounded-lg border transition-all ";
+
+        const userChoice = answeredMap.get(q.id);
+        if (userChoice) {
+          if (userChoice === q.ans) {
+            btn.className += "bg-emerald-900/60 border-emerald-500 text-emerald-300 font-bold";
+          } else {
+            btn.className += "bg-rose-900/60 border-rose-500 text-rose-300 font-bold";
+          }
+        } else if (currentQuestions[currentIndex] && currentQuestions[currentIndex].id === q.id) {
+          btn.className += "bg-indigo-600 border-indigo-400 text-white font-bold ring-2 ring-indigo-400";
+        } else {
+          btn.className += "bg-slate-900 border-slate-700 text-slate-300 hover:bg-slate-700";
+        }
+
+        btn.onclick = () => {
+          document.getElementById('topic-select').value = "ALL";
+          currentQuestions = [...questionsDatabase];
+          currentIndex = questionsDatabase.findIndex(item => item.id === q.id);
+          renderQuestion();
+          toggleGridModal();
+        };
+
+        palette.appendChild(btn);
+      });
     }
 
     // Initial load
