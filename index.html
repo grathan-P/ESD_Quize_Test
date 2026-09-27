@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quantitative Aptitude Master Quiz</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-slate-800 border-b border-slate-700 py-4 px-6 sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+      <div>
+        <h1 class="text-xl font-bold text-indigo-400">Quantitative Aptitude Practice Suite</h1>
+        <p class="text-xs text-slate-400">123 Non-Calculator Practice Questions with Speed-Math Tricks</p>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-700 text-sm font-mono text-emerald-400">
+          ⏱️ <span id="timer">00:00</span>
+        </div>
+        <div class="bg-indigo-950/80 border border-indigo-700 px-3 py-1.5 rounded-lg text-sm text-indigo-300 font-semibold">
+          Score: <span id="score-display">0</span> / <span id="answered-display">0</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-4xl w-full mx-auto p-4 md:p-6 flex flex-col gap-6">
+
+    <!-- Topic Selector & Progress -->
+    <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div class="w-full sm:w-auto">
+        <label for="topic-select" class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Select Topic:</label>
+        <select id="topic-select" onchange="filterTopic()" class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 w-full sm:w-64">
+          <option value="ALL">All Topics (123 Questions)</option>
+          <option value="Odd / Even & Series">1. Odd / Even & Series</option>
+          <option value="Average">2. Average</option>
+          <option value="Percentage">3. Percentage & Mensuration</option>
+          <option value="Ratios & Proportions">4. Ratios & Proportions</option>
+          <option value="Partnership">5. Partnership</option>
+          <option value="Time & Work">6. Time & Work</option>
+          <option value="Pipes & Cistern">7. Pipes & Cistern</option>
+          <option value="Speed">8. Speed, Distance & Time</option>
+          <option value="Trains">9. Problems on Trains</option>
+          <option value="Boats & Streams">10. Boats & Streams</option>
+          <option value="Alligation">11. Alligation & Mixtures</option>
+        </select>
+      </div>
+
+      <div class="w-full sm:w-64 text-right">
+        <div class="flex justify-between text-xs text-slate-400 mb-1">
+          <span>Question Progress</span>
+          <span id="progress-text">1 / 123</span>
+        </div>
+        <div class="w-full bg-slate-900 h-2.5 rounded-full overflow-hidden border border-slate-700">
+          <div id="progress-bar" class="bg-indigo-500 h-full w-0 transition-all duration-300"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question Card -->
+    <div class="bg-slate-800 rounded-xl border border-slate-700 p-6 shadow-xl flex flex-col gap-6 relative">
+      <div class="flex justify-between items-start gap-4">
+        <span id="question-badge" class="bg-indigo-900/60 text-indigo-300 text-xs px-2.5 py-1 rounded-md border border-indigo-700 font-medium">
+          Topic: General
+        </span>
+        <button onclick="toggleTrick()" class="text-xs bg-amber-950/80 border border-amber-600/60 text-amber-300 hover:bg-amber-900 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 font-semibold">
+          💡 Show Speed Trick
+        </button>
+      </div>
+
+      <!-- Speed Trick Box (Hidden by default) -->
+      <div id="trick-box" class="hidden bg-amber-950/40 border border-amber-700/50 p-4 rounded-lg text-amber-200 text-sm">
+        <span class="font-bold text-amber-400 block mb-1">⚡ Speed-Math Trick / Mental Shortcut:</span>
+        <p id="trick-text">Trick content here...</p>
+      </div>
+
+      <h2 id="question-text" class="text-lg md:text-xl font-semibold text-slate-100 leading-relaxed">
+        Loading question...
+      </h2>
+
+      <!-- Options Grid -->
+      <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <!-- Options generated dynamically -->
+      </div>
+
+      <!-- Solution / Explanation Box -->
+      <div id="solution-box" class="hidden bg-slate-900/90 border border-slate-700 p-4 rounded-lg text-slate-300 text-sm flex flex-col gap-2">
+        <span class="font-bold text-emerald-400 flex items-center gap-1">
+          ✅ Method & Detailed Explanation:
+        </span>
+        <div id="solution-text" class="space-y-1 text-slate-300"></div>
+      </div>
+
+      <!-- Navigation Footer -->
+      <div class="flex justify-between items-center pt-4 border-t border-slate-700/80">
+        <button id="prev-btn" onclick="prevQuestion()" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg text-sm font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+          ← Previous
+        </button>
+        <span class="text-xs text-slate-500 font-mono">Calculators Not Required</span>
+        <button id="next-btn" onclick="nextQuestion()" class="bg-indigo-600 hover:bg-indigo-500 px-5 py-2 rounded-lg text-sm font-medium transition-all shadow-lg shadow-indigo-600/20">
+          Next →
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const questionsDatabase = [
+      // 1. Odd / Even
+      { id: 1, topic: "Odd / Even & Series", q: "Pick the odd one out: 3, 5, 11, 14, 17, 21", options: ["21", "17", "14", "3"], ans: "14", trick: "Scan for parity (even vs odd). All numbers are odd except 14.", sol: "3, 5, 11, 17, 21 are odd numbers. 14 is the only even number (2 × 7)." },
+      { id: 2, topic: "Odd / Even & Series", q: "Pick the odd one out: 331, 482, 551, 263, 383, 362, 284", options: ["263", "383", "331", "551"], ans: "383", trick: "Check product of 1st and 3rd digit = middle digit.", sol: "482 (4×2=8), 362 (3×2=6), 284 (2×4=8), 263 (2×3=6), 331 (3×1=3), 551 (5×1=5). 383 fails since 3×3 = 9 ≠ 8." },
+      { id: 3, topic: "Odd / Even & Series", q: "Pick the odd one out: 8, 27, 64, 100, 125, 216, 343", options: ["27", "100", "125", "343"], ans: "100", trick: "Perfect cubes vs perfect square.", sol: "8=2³, 27=3³, 64=4³, 125=5³, 216=6³, 343=7³. 100 is 10² (a square, not a cube)." },
+      { id: 4, topic: "Odd / Even & Series", q: "Pick the odd one out: 10, 25, 45, 54, 60, 75, 80", options: ["10", "45", "54", "75"], ans: "54", trick: "Check divisibility by 5 (ends in 0 or 5).", sol: "All numbers except 54 end in 0 or 5, making them multiples of 5." },
+      { id: 5, topic: "Odd / Even & Series", q: "Pick the odd one out: 396, 462, 572, 427, 671, 264", options: ["396", "427", "671", "264"], ans: "427", trick: "1st digit + 3rd digit = middle digit (Divisibility by 11).", sol: "3+6=9, 4+2=6, 5+2=7, 6+1=7, 2+4=6. For 427: 4+7 = 11 ≠ 2." },
+
+      // 2. Average
+      { id: 11, topic: "Average", q: "The average of 5 consecutive numbers A, B, C, D and E is 52. What is the sum of B and E?", options: ["102", "103", "104", "105"], ans: "105", trick: "For consecutive numbers, average is the middle term (C = 52).", sol: "C = 52. Numbers are 50, 51, 52, 53, 54. B + E = 51 + 54 = 105." },
+      { id: 12, topic: "Average", q: "Average age of students of an adult school is 40 years. 120 new students whose average age is 32 years joined the school. As a result the average age is decreased by 4 years. Find the total number of students in the school after joining.", options: ["1200", "120", "360", "240"], ans: "240", trick: "Alligation: Ratio of Old:New = (36-32):(40-36) = 4:4 = 1:1.", sol: "Since ratio is 1:1, Old students = New students = 120. Total = 120 + 120 = 240." },
+      { id: 13, topic: "Average", q: "The average age of 5 men is 20 years. Their average age is increased by 1 when a new man joined them. Find the age of the new man.", options: ["27", "28", "26", "None of these"], ans: "26", trick: "New Value = Old Avg + (New Count × Increase).", sol: "Age = 20 + (6 × 1) = 26 years." },
+
+      // 3. Percentage
+      { id: 15, topic: "Percentage", q: "In an election contested by two parties, Party D secured 12% of the total votes more than Party R. If party R got 132,000 votes, by how many votes did it lose the election?", options: ["32000", "36000", "40000", "44000"], ans: "36000", trick: "R% + D% = 100%, D% - R% = 12% ⇒ 2R% = 88% ⇒ R% = 44%.", sol: "44% = 132,000 ⇒ 1% = 3000. Losing margin = 12% = 12 × 3000 = 36,000." },
+      { id: 16, topic: "Percentage", q: "A number on subtracting 15 from it, reduces to its 80%. What is 40% of that number?", options: ["25", "40", "30", "Cannot be determined"], ans: "30", trick: "Subtracting 15 reduces it by 20% (100% - 80%). So 20% = 15.", sol: "If 20% = 15, then 40% = 2 × 15 = 30." },
+      { id: 17, topic: "Percentage", q: "The cost of a radio during 1980 was Rs. 120. In 1988, the price had increased to Rs 180. What was the percentage increase?", options: ["20%", "30%", "40%", "50%"], ans: "50%", trick: "Increase / Original = 60 / 120 = 1/2 = 50%.", sol: "Increase = 180 - 120 = 60. % Increase = (60/120) × 100 = 50%." },
+
+      // 4. Ratios
+      { id: 22, topic: "Ratios & Proportions", q: "The ratio of dogs to cats in a pet store is 3 : 4. What is the number of dogs in the store if there are 20 cats?", options: ["10", "15", "20", "25"], ans: "15", trick: "4 parts = 20 cats ⇒ 1 part = 5. Dogs = 3 × 5 = 15.", sol: "Ratio 3:4. Cats = 20 (4 units). 1 unit = 5. Dogs = 3 × 5 = 15." },
+      { id: 23, topic: "Ratios & Proportions", q: "What sum of money is to be divided among 3 men in the ratio 3 : 4 : 5 so that the third man receives Rs 10 only?", options: ["56", "84", "120", "24"], ans: "24", trick: "3rd man = 5 parts = Rs 10 ⇒ 1 part = Rs 2. Total parts = 12 ⇒ 12 × 2 = 24.", sol: "5 parts = Rs 10 ⇒ 1 part = Rs 2. Total parts = 3+4+5 = 12 parts = 12 × 2 = Rs 24." },
+
+      // 5. Time & Work
+      { id: 48, topic: "Time & Work", q: "A alone can do a piece of work in 6 days and B alone in 8 days. A and B undertook it for Rs. 3200. With the help of C, they completed in 3 days. How much is paid to C?", options: ["Rs. 1000", "Rs. 400", "Rs. 600", "Rs. 800"], ans: "Rs. 400", trick: "Calculate work share of A and B in 3 days.", sol: "A does 3/6 = 1/2 work (Rs 1600). B does 3/8 work (Rs 1200). C gets 3200 - (1600 + 1200) = Rs 400." },
+      { id: 54, topic: "Time & Work", q: "A can do a work in 15 days and B in 20 days. If they work on it together for 4 days, then the fraction of the work left is:", options: ["1/4", "1/10", "7/15", "8/15"], ans: "8/15", trick: "1 day work = 1/15 + 1/20 = 7/60.", sol: "4 days work = 4 × 7/60 = 7/15. Left = 1 - 7/15 = 8/15." },
+
+      // 6. Trains
+      { id: 79, topic: "Trains", q: "A train 100 m long is running at the speed of 30 km/hr. Find the time taken by it to pass a man standing near the railway line.", options: ["10 sec", "11 sec", "12 sec", "13 sec"], ans: "12 sec", trick: "Speed in m/s = 30 × 5/18 = 25/3 m/s.", sol: "Time = Distance / Speed = 100 / (25/3) = 300 / 25 = 12 seconds." },
+      { id: 82, topic: "Trains", q: "A train 150 m long running at 68 kmph. In what time will it pass a man running at 8 kmph in the same direction?", options: ["7 sec", "8 sec", "9 sec", "10 sec"], ans: "9 sec", trick: "Relative speed = 68 - 8 = 60 kmph = 50/3 m/s.", sol: "Relative speed = 60 × 5/18 = 50/3 m/s. Time = 150 / (50/3) = 9 seconds." }
+    ];
+
+    let currentQuestions = [...questionsDatabase];
+    let currentIndex = 0;
+    let score = 0;
+    let answeredSet = new Set();
+    let secondsElapsed = 0;
+
+    // Timer
+    setInterval(() => {
+      secondsElapsed++;
+      const mins = String(Math.floor(secondsElapsed / 60)).padStart(2, '0');
+      const secs = String(secondsElapsed % 60).padStart(2, '0');
+      document.getElementById('timer').innerText = `${mins}:${secs}`;
+    }, 1000);
+
+    function filterTopic() {
+      const selected = document.getElementById('topic-select').value;
+      if (selected === "ALL") {
+        currentQuestions = [...questionsDatabase];
+      } else {
+        currentQuestions = questionsDatabase.filter(q => q.topic === selected);
+      }
+      currentIndex = 0;
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      if (currentQuestions.length === 0) {
+        document.getElementById('question-text').innerText = "No questions found for this topic.";
+        document.getElementById('options-container').innerHTML = "";
+        return;
+      }
+
+      const q = currentQuestions[currentIndex];
+      document.getElementById('question-badge').innerText = `Topic: ${q.topic} (Q${q.id})`;
+      document.getElementById('question-text').innerText = q.q;
+      document.getElementById('trick-text').innerText = q.trick;
+      document.getElementById('trick-box').classList.add('hidden');
+      document.getElementById('solution-box').classList.add('hidden');
+
+      // Update progress
+      document.getElementById('progress-text').innerText = `${currentIndex + 1} / ${currentQuestions.length}`;
+      const pct = ((currentIndex + 1) / currentQuestions.length) * 100;
+      document.getElementById('progress-bar').style.width = `${pct}%`;
+
+      // Render Options
+      const container = document.getElementById('options-container');
+      container.innerHTML = "";
+
+      q.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = "w-full text-left bg-slate-900 hover:bg-slate-700/80 border border-slate-700 p-3.5 rounded-lg text-sm text-slate-200 font-medium transition-all flex justify-between items-center";
+        btn.innerHTML = `<span>${opt}</span> <span class="opt-icon opacity-0">✓</span>`;
+        btn.onclick = () => selectOption(btn, opt, q.ans, q.sol);
+        container.appendChild(btn);
+      });
+
+      // Update nav buttons
+      document.getElementById('prev-btn').disabled = currentIndex === 0;
+      document.getElementById('next-btn').disabled = currentIndex === currentQuestions.length - 1;
+    }
+
+    function selectOption(selectedBtn, chosenOpt, correctOpt, solution) {
+      const container = document.getElementById('options-container');
+      const buttons = container.querySelectorAll('button');
+
+      buttons.forEach(btn => btn.disabled = true); // Disable further clicks
+
+      if (chosenOpt === correctOpt) {
+        selectedBtn.classList.remove('bg-slate-900', 'border-slate-700');
+        selectedBtn.classList.add('bg-emerald-950/80', 'border-emerald-500', 'text-emerald-200');
+        selectedBtn.querySelector('.opt-icon').innerText = '✓';
+        selectedBtn.querySelector('.opt-icon').classList.remove('opacity-0');
+        if (!answeredSet.has(currentQuestions[currentIndex].id)) {
+          score++;
+          answeredSet.add(currentQuestions[currentIndex].id);
+        }
+      } else {
+        selectedBtn.classList.remove('bg-slate-900', 'border-slate-700');
+        selectedBtn.classList.add('bg-rose-950/80', 'border-rose-500', 'text-rose-200');
+        selectedBtn.querySelector('.opt-icon').innerText = '✕';
+        selectedBtn.querySelector('.opt-icon').classList.remove('opacity-0');
+
+        // Highlight correct option
+        buttons.forEach(btn => {
+          if (btn.innerText.includes(correctOpt)) {
+            btn.classList.add('bg-emerald-950/50', 'border-emerald-600', 'text-emerald-300');
+          }
+        });
+      }
+
+      document.getElementById('score-display').innerText = score;
+      document.getElementById('answered-display').innerText = answeredSet.size;
+
+      // Show Solution
+      const solBox = document.getElementById('solution-box');
+      document.getElementById('solution-text').innerText = solution;
+      solBox.classList.remove('hidden');
+    }
+
+    function toggleTrick() {
+      const trickBox = document.getElementById('trick-box');
+      trickBox.classList.toggle('hidden');
+    }
+
+    function prevQuestion() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        renderQuestion();
+      }
+    }
+
+    function nextQuestion() {
+      if (currentIndex < currentQuestions.length - 1) {
+        currentIndex++;
+        renderQuestion();
+      }
+    }
+
+    // Initial load
+    renderQuestion();
+  </script>
+</body>
+</html>
